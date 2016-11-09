@@ -1,0 +1,14 @@
+.flex-width{
+  max-width: 800px;
+  margin: 0 auto;
+}
+table{
+  width: 90%;
+}
+
+td{
+  border: 1px solid black;
+  color: green;
+  width: 5px;
+  height: 150px;
+}
