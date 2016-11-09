@@ -48,7 +48,7 @@
 	
 	var React = __webpack_require__(1);
 	var ReactDOM = __webpack_require__(34);
-	var Game = __webpack_require__(174);
+	var Game = __webpack_require__(172);
 	document.addEventListener('DOMContentLoaded', function () {
 	  ReactDOM.render(React.createElement(Game, null), document.getElementById('app'));
 	});
@@ -21421,7 +21421,118 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(3)))
 
 /***/ },
-/* 172 */,
+/* 172 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	
+	var React = __webpack_require__(1);
+	var Table = __webpack_require__(173);
+	var initialState = {
+	  humanMark: 'X',
+	  compMark: 'O',
+	  array: [0, 1, 2, 3, 4, 5, 6, 7, 8],
+	  arr1: [0, 1, 2],
+	  arr2: [3, 4, 5],
+	  arr3: [6, 7, 8],
+	  arr4: [0, 3, 6],
+	  arr5: [1, 4, 7],
+	  arr6: [2, 5, 8],
+	  arr7: [0, 4, 8],
+	  arr8: [2, 4, 6]
+	};
+	var Game = React.createClass({
+	  displayName: "Game",
+	
+	  getInitialState: function getInitialState() {
+	    return initialState;
+	  },
+	  checkArray: function checkArray(arr, id, markType) {
+	    var id = parseInt(id);
+	    if (arr.indexOf(id) !== -1) {
+	      for (var i = 0; i < arr.length; i++) {
+	        if (arr[i] == id) {
+	          arr[i] = markType;
+	        }
+	      }
+	    }
+	  },
+	  winner: function winner(arr, markType) {
+	    var count = 0;
+	    for (var i = 0; i < arr.length; i++) {
+	      if (arr[i] === markType) {
+	        count++;
+	      }
+	    }
+	    if (count === 3) {
+	      console.log("winner!");
+	    }
+	  },
+	  addToArr: function addToArr(id, markType) {
+	    this.checkArray(this.state.arr1, id, markType);
+	    this.checkArray(this.state.arr2, id, markType);
+	    this.checkArray(this.state.arr3, id, markType);
+	    this.checkArray(this.state.arr4, id, markType);
+	    this.checkArray(this.state.arr5, id, markType);
+	    this.checkArray(this.state.arr6, id, markType);
+	    this.checkArray(this.state.arr7, id, markType);
+	    this.checkArray(this.state.arr8, id, markType);
+	    console.log(this.state.arr1, this.state.arr2, this.state.arr3, this.state.arr4, this.state.arr5, this.state.arr6, this.state.arr7, this.state.arr8);
+	  },
+	  compChoice: function compChoice() {
+	    var i = 0;
+	    while (i < this.state.array.length) {
+	      if (this.state.array[i] === '') {
+	        i++;
+	      } else {
+	        document.getElementById(this.state.array[i].toString()).innerHTML = this.state.compMark;
+	        this.addToArr(this.state.array[i], this.state.compMark);
+	        this.state.array[i] = '';
+	        break;
+	      }
+	      this.winner(this.state.arr1, this.state.compMark);
+	      this.winner(this.state.arr2, this.state.compMark);
+	      this.winner(this.state.arr3, this.state.compMark);
+	      this.winner(this.state.arr4, this.state.compMark);
+	      this.winner(this.state.arr5, this.state.compMark);
+	      this.winner(this.state.arr6, this.state.compMark);
+	      this.winner(this.state.arr7, this.state.compMark);
+	      this.winner(this.state.arr8, this.state.compMark);
+	    }
+	  },
+	  onTdClick: function onTdClick(event) {
+	    if (this.state.array[parseInt(event.target.id)] === '') {
+	      return;
+	    }
+	    for (var i = 0; i < this.state.array.length; i++) {
+	      if (parseInt(event.target.id) == this.state.array[i]) {
+	        this.state.array[i] = '';
+	      }
+	    }
+	    console.log(this.state.array);
+	    document.getElementById(event.target.id).innerHTML = this.state.humanMark;
+	    this.addToArr(parseInt(event.target.id), this.state.humanMark);
+	    this.winner(this.state.arr1, this.state.humanMark);
+	    this.winner(this.state.arr2, this.state.humanMark);
+	    this.winner(this.state.arr3, this.state.humanMark);
+	    this.winner(this.state.arr4, this.state.humanMark);
+	    this.winner(this.state.arr5, this.state.humanMark);
+	    this.winner(this.state.arr6, this.state.humanMark);
+	    this.winner(this.state.arr7, this.state.humanMark);
+	    this.winner(this.state.arr8, this.state.humanMark);
+	    this.compChoice();
+	  },
+	  render: function render() {
+	    return React.createElement(
+	      "div",
+	      null,
+	      React.createElement(Table, { onClick: this.onTdClick })
+	    );
+	  }
+	});
+	module.exports = Game;
+
+/***/ },
 /* 173 */
 /***/ function(module, exports, __webpack_require__) {
 
@@ -21508,91 +21619,6 @@
 	  }
 	});
 	module.exports = Table;
-
-/***/ },
-/* 174 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	
-	var React = __webpack_require__(1);
-	var Table = __webpack_require__(173);
-	var initialState = {
-	  humanMark: 'X',
-	  compMark: 'O',
-	  array: [0, 1, 2, 3, 4, 5, 6, 7, 8],
-	  arr1: [0, 1, 2],
-	  arr2: [3, 4, 5],
-	  arr3: [6, 7, 8],
-	  arr4: [0, 3, 6],
-	  arr5: [1, 4, 7],
-	  arr6: [2, 5, 8],
-	  arr7: [0, 4, 8],
-	  arr8: [2, 4, 6]
-	};
-	var Game = React.createClass({
-	  displayName: "Game",
-	
-	  getInitialState: function getInitialState() {
-	    return initialState;
-	  },
-	  checkArray: function checkArray(arr, id, markType) {
-	    var id = parseInt(id);
-	    if (arr.indexOf(id) !== -1) {
-	      for (var i = 0; i < arr.length; i++) {
-	        if (arr[i] == id) {
-	          arr[i] = markType;
-	        }
-	      }
-	    }
-	  },
-	  addToArr: function addToArr(id, markType) {
-	    this.checkArray(this.state.arr1, id, markType);
-	    this.checkArray(this.state.arr2, id, markType);
-	    this.checkArray(this.state.arr3, id, markType);
-	    this.checkArray(this.state.arr4, id, markType);
-	    this.checkArray(this.state.arr5, id, markType);
-	    this.checkArray(this.state.arr6, id, markType);
-	    this.checkArray(this.state.arr7, id, markType);
-	    this.checkArray(this.state.arr8, id, markType);
-	    console.log(this.state.arr1, this.state.arr2, this.state.arr3, this.state.arr4, this.state.arr5, this.state.arr6, this.state.arr7, this.state.arr8);
-	  },
-	  compChoice: function compChoice() {
-	    var i = 0;
-	    while (i < this.state.array.length) {
-	      if (this.state.array[i] === '') {
-	        i++;
-	      } else {
-	        document.getElementById(this.state.array[i].toString()).innerHTML = this.state.compMark;
-	        this.addToArr(this.state.array[i], this.state.compMark);
-	        this.state.array[i] = '';
-	        break;
-	      }
-	    }
-	  },
-	  onTdClick: function onTdClick(event) {
-	    if (this.state.array[parseInt(event.target.id)] === '') {
-	      return;
-	    }
-	    for (var i = 0; i < this.state.array.length; i++) {
-	      if (parseInt(event.target.id) == this.state.array[i]) {
-	        this.state.array[i] = '';
-	      }
-	    }
-	    console.log(this.state.array);
-	    document.getElementById(event.target.id).innerHTML = this.state.humanMark;
-	    this.addToArr(parseInt(event.target.id), this.state.humanMark);
-	    this.compChoice();
-	  },
-	  render: function render() {
-	    return React.createElement(
-	      "div",
-	      null,
-	      React.createElement(Table, { onClick: this.onTdClick })
-	    );
-	  }
-	});
-	module.exports = Game;
 
 /***/ }
 /******/ ]);

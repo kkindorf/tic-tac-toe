@@ -27,6 +27,17 @@ var Game = React.createClass({
       }
     }
   },
+  winner: function(arr, markType){
+    var count = 0;
+    for (var i = 0; i < arr.length; i++){
+      if(arr[i] === markType){
+        count++;
+      }
+    }
+    if(count === 3){
+      console.log("winner!");
+    }
+  },
   addToArr: function(id, markType){
     this.checkArray(this.state.arr1, id, markType);
     this.checkArray(this.state.arr2, id, markType);
@@ -50,6 +61,14 @@ var Game = React.createClass({
         this.state.array[i] = '';
         break;
       }
+      this.winner(this.state.arr1, this.state.compMark);
+      this.winner(this.state.arr2, this.state.compMark);
+      this.winner(this.state.arr3, this.state.compMark);
+      this.winner(this.state.arr4, this.state.compMark);
+      this.winner(this.state.arr5, this.state.compMark);
+      this.winner(this.state.arr6, this.state.compMark);
+      this.winner(this.state.arr7, this.state.compMark);
+      this.winner(this.state.arr8, this.state.compMark);
     }
   },
   onTdClick: function(event){
@@ -64,6 +83,14 @@ var Game = React.createClass({
     console.log(this.state.array);
     document.getElementById(event.target.id).innerHTML = this.state.humanMark;
     this.addToArr(parseInt(event.target.id), this.state.humanMark);
+    this.winner(this.state.arr1, this.state.humanMark);
+    this.winner(this.state.arr2, this.state.humanMark);
+    this.winner(this.state.arr3, this.state.humanMark);
+    this.winner(this.state.arr4, this.state.humanMark);
+    this.winner(this.state.arr5, this.state.humanMark);
+    this.winner(this.state.arr6, this.state.humanMark);
+    this.winner(this.state.arr7, this.state.humanMark);
+    this.winner(this.state.arr8, this.state.humanMark);
     this.compChoice();
   },
   render: function(){
