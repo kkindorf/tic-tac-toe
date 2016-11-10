@@ -5,7 +5,7 @@ var Table = React.createClass({
       <div>
         <div className="flex-width">
           <table>
-            <tbody>
+            <tbody id="table">
               <tr>
                 <td id="0" className="box" onClick={this.props.onClick}>{this.props.mark}</td>
                 <td id="1" className="box" onClick={this.props.onClick}>{this.props.mark}</td>
