@@ -21441,7 +21441,6 @@
 	var win = false;
 	var _winner = "";
 	var mark = 0;
-	var num = 0;
 	var initialState = {
 	  humanMark: 'X',
 	  compMark: 'O'
@@ -21531,6 +21530,7 @@
 	    return Math.floor(Math.random() * (max - min) + min);
 	  },
 	  compChoice: function compChoice() {
+	    var num = 0;
 	    if (_winner === this.state.humanMark || _winner === 'tie') {
 	      _winner = "";
 	      return;
@@ -21538,6 +21538,7 @@
 	    num = this.getRandomArbitrary(0, array.length);
 	    if (array[num] === '') {
 	      num = this.getRandomArbitrary(0, array.length);
+	      //recursively call compChoice to redo random number
 	      this.compChoice();
 	    } else {
 	      document.getElementById(array[num].toString()).innerHTML = this.state.compMark;

@@ -13,7 +13,6 @@ var arr8 = [2, 4, 6];
 var win = false;
 var winner = "";
 var mark = 0;
-var num = 0;
 var initialState = {
       humanMark: 'X',
       compMark: 'O',
@@ -102,6 +101,7 @@ var Game = React.createClass({
       return Math.floor(Math.random() * (max - min) + min);
   },
   compChoice: function(){
+    var num = 0;
     if(winner === this.state.humanMark || winner === 'tie'){
       winner = "";
       return;
@@ -109,6 +109,7 @@ var Game = React.createClass({
     num = this.getRandomArbitrary(0, array.length);
       if(array[num] === ''){
         num = this.getRandomArbitrary(0, array.length);
+        //recursively call compChoice to redo random number
         this.compChoice();
       }
       else{
