@@ -13,6 +13,7 @@ var arr8 = [2, 4, 6];
 var win = false;
 var winner = "";
 var mark = 0;
+var num = 0;
 var initialState = {
       humanMark: 'X',
       compMark: 'O',
@@ -97,21 +98,24 @@ var Game = React.createClass({
     this.checkArray(arr8, id, markType);
     console.log(arr1, arr2, arr3, arr4, arr5, arr6, arr7, arr8)
   },
+  getRandomArbitrary: function(min, max) {
+      return Math.floor(Math.random() * (max - min) + min);
+  },
   compChoice: function(){
     if(winner === this.state.humanMark || winner === 'tie'){
       winner = "";
       return;
     }
-    var i = 0;
-    while (i < array.length) {
-      if(array[i] === ''){
-        i++;
+    num = this.getRandomArbitrary(0, array.length);
+      if(array[num] === ''){
+        num = this.getRandomArbitrary(0, array.length);
+        this.compChoice();
       }
       else{
-        document.getElementById(array[i].toString()).innerHTML = this.state.compMark;
+        document.getElementById(array[num].toString()).innerHTML = this.state.compMark;
         mark++;
-        this.addToArr(array[i], this.state.compMark);
-        array[i] = '';
+        this.addToArr(array[num], this.state.compMark);
+        array[num] = '';
         this.winner(arr1, this.state.compMark);
         this.winner(arr2, this.state.compMark);
         this.winner(arr3, this.state.compMark);
@@ -120,11 +124,9 @@ var Game = React.createClass({
         this.winner(arr6, this.state.compMark);
         this.winner(arr7, this.state.compMark);
         this.winner(arr8, this.state.compMark);
-        break;
       }
 
-    }
-  },
+    },
   onTdClick: function(event){
     if(array[parseInt(event.target.id)] === ''){
       return;
