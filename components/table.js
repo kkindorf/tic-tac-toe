@@ -7,19 +7,19 @@ var Table = React.createClass({
           <table>
             <tbody id="table">
               <tr>
-                <td id="0" className="box" onClick={this.props.onClick}>{this.props.mark}</td>
-                <td id="1" className="box" onClick={this.props.onClick}>{this.props.mark}</td>
-                <td id="2" className="box" onClick={this.props.onClick}>{this.props.mark}</td>
+                <td id="0" className="box" onClick={this.props.onClick}></td>
+                <td id="1" className="box" onClick={this.props.onClick}></td>
+                <td id="2" className="box" onClick={this.props.onClick}></td>
               </tr>
               <tr>
-                <td id="3" className="box" onClick={this.props.onClick}>{this.props.mark}</td>
-                <td id="4" className="box" onClick={this.props.onClick}>{this.props.mark}</td>
-                <td id="5" className="box" onClick={this.props.onClick}>{this.props.mark}</td>
+                <td id="3" className="box" onClick={this.props.onClick}></td>
+                <td id="4" className="box" onClick={this.props.onClick}></td>
+                <td id="5" className="box" onClick={this.props.onClick}></td>
               </tr>
               <tr>
-                <td id="6" className="box" onClick={this.props.onClick}>{this.props.mark}</td>
-                <td id="7" className="box" onClick={this.props.onClick}>{this.props.mark}</td>
-                <td id="8" className="box" onClick={this.props.onClick}>{this.props.mark}</td>
+                <td id="6" className="box" onClick={this.props.onClick}></td>
+                <td id="7" className="box" onClick={this.props.onClick}></td>
+                <td id="8" className="box" onClick={this.props.onClick}></td>
               </tr>
             </tbody>
           </table>
