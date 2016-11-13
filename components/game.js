@@ -10,12 +10,13 @@ var arr5 = [1, 4, 7];
 var arr6 = [2, 5, 8];
 var arr7 = [0, 4, 8];
 var arr8 = [2, 4, 6];
-var win = false;
 var winner = "";
 var mark = 0;
+var win = false;
 var blocked = false;
 var newNum = 0;
 var num = 0;
+var twoCompMarks = false;
 var initialState = {
       humanMark: 'X',
       compMark: 'O',
@@ -51,35 +52,37 @@ var Game = React.createClass({
     }
     //if count is the length of the array then we have a winner
     if(count === arr.length){
-      mark = 0;
-      win = true;
-      count = 0;
-      blocked = false;
-      newNum = 0;
-      num = 0;
-      winner = markType;
-      console.log(winner, 'wins');
-      console.log(array);
-      array = [0, 1, 2, 3, 4, 5, 6, 7, 8];
-      arr1 = [0, 1, 2];
-      arr2 = [3, 4, 5];
-      arr3 = [6, 7, 8];
-      arr4 = [0, 3, 6];
-      arr5 = [1, 4, 7];
-      arr6 = [2, 5, 8];
-      arr7 = [0, 4, 8];
-      arr8 = [2, 4, 6];
-      win = false;
-      for(var i = 0; i < 9; i++){
-        document.getElementById(i.toString()).innerHTML = '';
-      }
+        setTimeout(function(){
+          mark = 0;
+          win = true;
+          count = 0;
+          blocked = false;
+          twoCompMarks = false;
+          newNum = 0;
+          num = 0;
+          winner = markType;
+          array = [0, 1, 2, 3, 4, 5, 6, 7, 8];
+          arr1 = [0, 1, 2];
+          arr2 = [3, 4, 5];
+          arr3 = [6, 7, 8];
+          arr4 = [0, 3, 6];
+          arr5 = [1, 4, 7];
+          arr6 = [2, 5, 8];
+          arr7 = [0, 4, 8];
+          arr8 = [2, 4, 6];
+          win = false;
+          for(var i = 0; i < 9; i++){
+            document.getElementById(i.toString()).innerHTML = '';
+          }
+      }, 3000);
     }
     if(mark === array.length){
+      setTimeout(function(){
       winner = 'tie';
       console.log(winner);
-      mark = 0;
       count = 0;
       blocked = false;
+      twoCompMarks = false;
       newNum = 0;
       num = 0;
       array = [0, 1, 2, 3, 4, 5, 6, 7, 8];
@@ -94,8 +97,8 @@ var Game = React.createClass({
       for(var i = 0; i < 9; i++){
         document.getElementById(i.toString()).innerHTML = '';
       }
+    }, 3000);
     }
-
   },
   /*use checkAllCombos to add mark types to combination arrays if necessary*/
   checkAllCombos: function(id, markType){
@@ -137,7 +140,29 @@ var Game = React.createClass({
       }
     }
   },
+  twoComps: function(arr, num){
+    var count = 0;
+    if(arr.indexOf(this.state.humanMark)!==-1){
+      return;
+    }
+    for(var i = 0; i < arr.length; i++){
+      if(arr[i] === this.state.compMark){
+        console.log(arr[i], arr);
+        count++;
+      }
+    }
+    if(count === 2){
+      for(var i = 0; i < arr.length;i++){
+        if(arr[i]!== this.state.compMark){
+          console.log(arr[i]);
+          console.log(arr);
+          twoCompMarks = true;
+          newNum = arr[i];
 
+        }
+      }
+    }
+  },
   /*block checks if any combo array has more than one humanMark*/
   block: function(arr, num){
     var count = 0;
@@ -146,25 +171,18 @@ var Game = React.createClass({
     }
       for(var i = 0; i < arr.length; i++){
        if(arr[i] === this.state.humanMark){
-         console.log(arr[i], arr);
          count++;
       }
      }
      if(count === 2){
        for(var i = 0; i < arr.length; i++){
          if(arr[i] !== this.state.humanMark){
-           console.log(arr[i]);
-           console.log(arr);
-
            blocked = true;
-
            newNum = arr[i];
-           console.log(newNum);
          }
        }
     }
     if(count < 2){
-      console.log(newNum);
       return;
     }
 
@@ -172,9 +190,16 @@ var Game = React.createClass({
 
   /*all subsequent choices start here*/
    compChoice: function(){
+
      var num = 0;
-    if(winner === this.state.humanMark || winner === 'tie'){
+    if(winner === this.state.humanMark){
+      console.log(winner);
       winner = "";
+      return;
+    }
+    if(mark === array.length){
+      winner = '';
+      mark = '';
       return;
     }
     num = this.getRandomArbitrary(0, array.length);
@@ -184,17 +209,30 @@ var Game = React.createClass({
         this.compChoice();
       }
       else{
-        /*see if we need to block*/
-        this.block(arr1, num);
-        this.block(arr2, num);
-        this.block(arr3, num);
-        this.block(arr4, num);
-        this.block(arr5, num);
-        this.block(arr6, num);
-        this.block(arr7, num);
-        this.block(arr8, num);
-        if(blocked === true){
+        this.twoComps(arr1, num);
+        this.twoComps(arr2, num);
+        this.twoComps(arr3, num);
+        this.twoComps(arr4, num);
+        this.twoComps(arr5, num);
+        this.twoComps(arr6, num);
+        this.twoComps(arr7, num);
+        this.twoComps(arr8, num);
+        if(twoCompMarks){
           num = newNum;
+        }
+        if(!twoCompMarks){
+          /*see if we need to block*/
+          this.block(arr1, num);
+          this.block(arr2, num);
+          this.block(arr3, num);
+          this.block(arr4, num);
+          this.block(arr5, num);
+          this.block(arr6, num);
+          this.block(arr7, num);
+          this.block(arr8, num);
+          if(blocked){
+            num = newNum;
+          }
         }
         /*we use this for loop in case the number returned from block is not a good number*/
         if(array.indexOf(num)!==num){
@@ -248,8 +286,6 @@ var Game = React.createClass({
     else{
       this.compChoice();
     }
-
-
   },
   render: function(){
     return (
