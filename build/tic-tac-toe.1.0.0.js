@@ -21536,7 +21536,6 @@
 	    this.checkCombo(arr6, id, markType);
 	    this.checkCombo(arr7, id, markType);
 	    this.checkCombo(arr8, id, markType);
-	    console.log(arr1, arr2, arr3, arr4, arr5, arr6, arr7, arr8);
 	  },
 	  getRandomArbitrary: function getRandomArbitrary(min, max) {
 	    return Math.floor(Math.random() * (max - min) + min);
@@ -21554,7 +21553,6 @@
 	      num = 0;
 	    } else {
 	      num = altFirstChoice[Math.floor(Math.random() * altFirstChoice.length)];
-	      console.log(num);
 	      if (!array[num]) {
 	        this.compFirstChoice();
 	      } else {
@@ -21596,7 +21594,6 @@
 	      return;
 	    }
 	    num = this.getRandomArbitrary(0, array.length);
-	    console.log(num);
 	    if (!array[num]) {
 	      this.compChoice();
 	    } else {
@@ -21612,12 +21609,10 @@
 	      if (blocked === true) {
 	        num = newNum;
 	      }
-	
-	      console.log(array);
-	      document.getElementById(array[num].toString()).innerHTML = this.state.compMark;
+	      document.getElementById(array.indexOf(num)).innerHTML = this.state.compMark;
 	      mark++;
-	      this.checkAllCombos(array[num], this.state.compMark);
-	      array[num] = '';
+	      this.checkAllCombos(array.indexOf(num), this.state.compMark);
+	      array[array.indexOf(num)] = '';
 	
 	      this.winner(arr1, this.state.compMark);
 	      this.winner(arr2, this.state.compMark);
