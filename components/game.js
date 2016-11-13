@@ -114,7 +114,7 @@ var Game = React.createClass({
 
   /*choose a corner or center spot first for most chances*/
   compFirstChoice: function(){
-     var altFirstChoice = [2,4,6,8];
+     var altFirstChoice = [0,2,6,8];
      if(array[4] !== ""){
        num = 4;
        document.getElementById(array[num].toString()).innerHTML = this.state.compMark;
@@ -146,16 +146,26 @@ var Game = React.createClass({
     }
       for(var i = 0; i < arr.length; i++){
        if(arr[i] === this.state.humanMark){
+         console.log(arr[i], arr);
          count++;
       }
      }
      if(count === 2){
        for(var i = 0; i < arr.length; i++){
          if(arr[i] !== this.state.humanMark){
+           console.log(arr[i]);
+           console.log(arr);
+
            blocked = true;
+
            newNum = arr[i];
+           console.log(newNum);
          }
        }
+    }
+    if(count < 2){
+      console.log(newNum);
+      return;
     }
 
   },
@@ -168,7 +178,9 @@ var Game = React.createClass({
       return;
     }
     num = this.getRandomArbitrary(0, array.length);
-      if(!array[num]){
+     console.log(array[num])
+     console.log(array);
+      if(array.indexOf(num) !== num){
         this.compChoice();
       }
       else{
@@ -184,20 +196,28 @@ var Game = React.createClass({
         if(blocked === true){
           num = newNum;
         }
-        document.getElementById(array.indexOf(num)).innerHTML = this.state.compMark;
-        mark++;
-        this.checkAllCombos(array.indexOf(num), this.state.compMark);
-        array[array.indexOf(num)] = '';
-
-        this.winner(arr1, this.state.compMark);
-        this.winner(arr2, this.state.compMark);
-        this.winner(arr3, this.state.compMark);
-        this.winner(arr4, this.state.compMark);
-        this.winner(arr5, this.state.compMark);
-        this.winner(arr6, this.state.compMark);
-        this.winner(arr7, this.state.compMark);
-        this.winner(arr8, this.state.compMark);
-
+        /*we use this for loop in case the number returned from block is not a good number*/
+        if(array.indexOf(num)!==num){
+          console.log('hi im wrong');
+          for(var i = 0; i < array.length; i++){
+            if(array[i] !== ""){
+              num = array[i];
+            }
+          }
+        }
+          document.getElementById(array.indexOf(num)).innerHTML = this.state.compMark;
+          mark++;
+          this.checkAllCombos(array.indexOf(num), this.state.compMark);
+          array[num] = '';
+          console.log(array);
+          this.winner(arr1, this.state.compMark);
+          this.winner(arr2, this.state.compMark);
+          this.winner(arr3, this.state.compMark);
+          this.winner(arr4, this.state.compMark);
+          this.winner(arr5, this.state.compMark);
+          this.winner(arr6, this.state.compMark);
+          this.winner(arr7, this.state.compMark);
+          this.winner(arr8, this.state.compMark);
       }
 
     },

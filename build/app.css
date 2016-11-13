@@ -4,6 +4,7 @@
 }
 table{
   width: 90%;
+  border-spacing:0;
 }
 
 td{
