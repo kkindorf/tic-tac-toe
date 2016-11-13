@@ -21428,6 +21428,7 @@
 	
 	var React = __webpack_require__(1);
 	var Table = __webpack_require__(173);
+	var Modal = __webpack_require__(174);
 	var array = [0, 1, 2, 3, 4, 5, 6, 7, 8];
 	/*possible winning combinations*/
 	var arr1 = [0, 1, 2];
@@ -21447,13 +21448,30 @@
 	var twoCompMarks = false;
 	var initialState = {
 	  humanMark: 'X',
-	  compMark: 'O'
+	  compMark: 'O',
+	  compsTurn: false,
+	  showTable: false
 	};
+	
 	var Game = React.createClass({
 	  displayName: "Game",
 	
 	  getInitialState: function getInitialState() {
 	    return initialState;
+	  },
+	  markChoice: function markChoice(event) {
+	    console.log(event.target.id);
+	    if (event.target.id === "X") {
+	      this.setState({ showTable: true });
+	      document.getElementById("modal").style.display = "none";
+	    } else if (event.target.id === "O") {
+	      this.setState({
+	        humanMark: "O",
+	        compMark: "X",
+	        showTable: true
+	      });
+	      document.getElementById("modal").style.display = "none";
+	    }
 	  },
 	  //checkArray looks through each array combination for
 	  //the id which could be 0 - 8
@@ -21471,8 +21489,6 @@
 	  },
 	  winner: function winner(arr, markType) {
 	    var count = 0;
-	    var tie = 0;
-	
 	    for (var i = 0; i < arr.length; i++) {
 	      //if each element in the array is an X or O
 	      if (arr[i] === markType) {
@@ -21483,9 +21499,9 @@
 	    //if count is the length of the array then we have a winner
 	    if (count === arr.length) {
 	      win = true;
+	      this.setState({ compsTurn: true });
 	      setTimeout(function () {
 	        mark = 0;
-	
 	        count = 0;
 	        blocked = false;
 	        twoCompMarks = false;
@@ -21517,7 +21533,6 @@
 	        twoCompMarks = false;
 	        newNum = 0;
 	        num = 0;
-	
 	        array = [0, 1, 2, 3, 4, 5, 6, 7, 8];
 	        arr1 = [0, 1, 2];
 	        arr2 = [3, 4, 5];
@@ -21632,8 +21647,6 @@
 	      return;
 	    }
 	    num = this.getRandomArbitrary(0, array.length);
-	    console.log(array[num]);
-	    console.log(array);
 	    if (array.indexOf(num) !== num) {
 	      this.compChoice();
 	    } else {
@@ -21720,7 +21733,8 @@
 	    return React.createElement(
 	      "div",
 	      null,
-	      React.createElement(Table, { onClick: this.onTdClick })
+	      React.createElement(Modal, { onClick: this.markChoice }),
+	      this.state.showTable ? React.createElement(Table, { onClick: this.onTdClick }) : null
 	    );
 	  }
 	});
@@ -21742,7 +21756,7 @@
 	      null,
 	      React.createElement(
 	        "div",
-	        { className: "flex-width" },
+	        { id: "flex-width" },
 	        React.createElement(
 	          "table",
 	          null,
@@ -21752,23 +21766,23 @@
 	            React.createElement(
 	              "tr",
 	              null,
-	              React.createElement("td", { id: "0", className: "box", onClick: this.props.onClick }),
-	              React.createElement("td", { id: "1", className: "box", onClick: this.props.onClick }),
-	              React.createElement("td", { id: "2", className: "box", onClick: this.props.onClick })
+	              React.createElement("td", { id: "0", className: "top left", onClick: this.props.onClick }),
+	              React.createElement("td", { id: "1", className: "top", onClick: this.props.onClick }),
+	              React.createElement("td", { id: "2", className: "top right", onClick: this.props.onClick })
 	            ),
 	            React.createElement(
 	              "tr",
 	              null,
-	              React.createElement("td", { id: "3", className: "box", onClick: this.props.onClick }),
+	              React.createElement("td", { id: "3", className: "left", onClick: this.props.onClick }),
 	              React.createElement("td", { id: "4", className: "box", onClick: this.props.onClick }),
-	              React.createElement("td", { id: "5", className: "box", onClick: this.props.onClick })
+	              React.createElement("td", { id: "5", className: "right", onClick: this.props.onClick })
 	            ),
 	            React.createElement(
 	              "tr",
 	              null,
-	              React.createElement("td", { id: "6", className: "box", onClick: this.props.onClick }),
-	              React.createElement("td", { id: "7", className: "box", onClick: this.props.onClick }),
-	              React.createElement("td", { id: "8", className: "box", onClick: this.props.onClick })
+	              React.createElement("td", { id: "6", className: "bottom left", onClick: this.props.onClick }),
+	              React.createElement("td", { id: "7", className: "bottom", onClick: this.props.onClick }),
+	              React.createElement("td", { id: "8", className: "bottom right", onClick: this.props.onClick })
 	            )
 	          )
 	        )
@@ -21777,6 +21791,45 @@
 	  }
 	});
 	module.exports = Table;
+
+/***/ },
+/* 174 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	
+	var React = __webpack_require__(1);
+	
+	var Modal = React.createClass({
+	  displayName: "Modal",
+	
+	  render: function render() {
+	    return React.createElement(
+	      "div",
+	      { id: "modal", className: "myModal" },
+	      React.createElement(
+	        "div",
+	        { className: "modal-content" },
+	        React.createElement(
+	          "h1",
+	          null,
+	          "Choose your mark"
+	        ),
+	        React.createElement(
+	          "div",
+	          { id: "X", onClick: this.props.onClick, className: "mark" },
+	          "X"
+	        ),
+	        React.createElement(
+	          "div",
+	          { id: "O", onClick: this.props.onClick, className: "mark" },
+	          "O"
+	        )
+	      )
+	    );
+	  }
+	});
+	module.exports = Modal;
 
 /***/ }
 /******/ ]);

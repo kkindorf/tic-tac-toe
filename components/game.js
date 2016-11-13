@@ -1,5 +1,6 @@
 var React = require("react");
 var Table = require("./table.js");
+var Modal = require("./modal.js");
 var array = [0, 1, 2, 3, 4, 5, 6, 7, 8];
 /*possible winning combinations*/
 var arr1 = [0, 1, 2];
@@ -20,10 +21,29 @@ var twoCompMarks = false;
 var initialState = {
       humanMark: 'X',
       compMark: 'O',
+      compsTurn: false,
+      showTable: false
     };
+
 var Game = React.createClass({
   getInitialState: function(){
     return initialState;
+  },
+  markChoice: function(event){
+    console.log(event.target.id);
+    if(event.target.id === "X"){
+      this.setState({showTable:true});
+      document.getElementById("modal").style.display = "none";
+    }
+    else if(event.target.id === "O"){
+      this.setState({
+        humanMark:"O",
+        compMark: "X",
+        showTable: true
+      })
+      document.getElementById("modal").style.display = "none";
+    }
+
   },
   //checkArray looks through each array combination for
   //the id which could be 0 - 8
@@ -41,8 +61,6 @@ var Game = React.createClass({
   },
   winner: function(arr, markType){
     var count = 0;
-    var tie = 0;
-
     for (var i = 0; i < arr.length; i++){
       //if each element in the array is an X or O
       if(arr[i] === markType){
@@ -53,9 +71,9 @@ var Game = React.createClass({
     //if count is the length of the array then we have a winner
     if(count === arr.length){
       win = true;
+      this.setState({compsTurn:true});
         setTimeout(function(){
           mark = 0;
-
           count = 0;
           blocked = false;
           twoCompMarks = false;
@@ -87,7 +105,6 @@ var Game = React.createClass({
       twoCompMarks = false;
       newNum = 0;
       num = 0;
-
       array = [0, 1, 2, 3, 4, 5, 6, 7, 8];
       arr1 = [0, 1, 2];
       arr2 = [3, 4, 5];
@@ -102,8 +119,8 @@ var Game = React.createClass({
         document.getElementById(i.toString()).innerHTML = '';
       }
     }, 3000);
-    }
-  },
+  }
+},
   /*use checkAllCombos to add mark types to combination arrays if necessary*/
   checkAllCombos: function(id, markType){
     this.checkCombo(arr1, id, markType);
@@ -206,8 +223,6 @@ var Game = React.createClass({
       return;
     }
     num = this.getRandomArbitrary(0, array.length);
-     console.log(array[num])
-     console.log(array);
       if(array.indexOf(num) !== num){
         this.compChoice();
       }
@@ -296,7 +311,8 @@ var Game = React.createClass({
   render: function(){
     return (
         <div>
-          <Table onClick={this.onTdClick}/>
+          <Modal onClick = {this.markChoice}/>
+          { this.state.showTable ? <Table onClick={this.onTdClick}/> : null }
         </div>
     )
   }
