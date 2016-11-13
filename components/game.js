@@ -52,9 +52,10 @@ var Game = React.createClass({
     }
     //if count is the length of the array then we have a winner
     if(count === arr.length){
+      win = true;
         setTimeout(function(){
           mark = 0;
-          win = true;
+
           count = 0;
           blocked = false;
           twoCompMarks = false;
@@ -77,6 +78,7 @@ var Game = React.createClass({
       }, 3000);
     }
     if(mark === array.length){
+      win = true;
       setTimeout(function(){
       winner = 'tie';
       console.log(winner);
@@ -85,6 +87,7 @@ var Game = React.createClass({
       twoCompMarks = false;
       newNum = 0;
       num = 0;
+
       array = [0, 1, 2, 3, 4, 5, 6, 7, 8];
       arr1 = [0, 1, 2];
       arr2 = [3, 4, 5];
@@ -94,6 +97,7 @@ var Game = React.createClass({
       arr6 = [2, 5, 8];
       arr7 = [0, 4, 8];
       arr8 = [2, 4, 6];
+      win = false;
       for(var i = 0; i < 9; i++){
         document.getElementById(i.toString()).innerHTML = '';
       }
@@ -190,7 +194,6 @@ var Game = React.createClass({
 
   /*all subsequent choices start here*/
    compChoice: function(){
-
      var num = 0;
     if(winner === this.state.humanMark){
       console.log(winner);
@@ -261,6 +264,9 @@ var Game = React.createClass({
     },
 /*on human click*/
   onTdClick: function(event){
+    if(win){
+      return;
+    }
     if(array[parseInt(event.target.id)] === ''){
       return;
     }
