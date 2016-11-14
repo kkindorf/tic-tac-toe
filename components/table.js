@@ -4,8 +4,8 @@ var Table = React.createClass({
     return (
       <div>
         <div id="flex-width">
-          <table>
-            <tbody id="table">
+          <table id="table">
+            <tbody>
               <tr>
                 <td id="0" className="top left" onClick={this.props.onClick}></td>
                 <td id="1" className="top" onClick={this.props.onClick}></td>
@@ -23,6 +23,7 @@ var Table = React.createClass({
               </tr>
             </tbody>
           </table>
+          <h1 id="wins"></h1>
         </div>
       </div>
     )

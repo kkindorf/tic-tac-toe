@@ -21445,298 +21445,296 @@
 	var blocked = false;
 	var newNum = 0;
 	var num = 0;
+	var table;
 	var twoCompMarks = false;
 	var initialState = {
-	  humanMark: 'X',
-	  compMark: 'O',
-	  compsTurn: false,
-	  showTable: false
+	    humanMark: 'X',
+	    compMark: 'O',
+	    showTable: false,
+	    showModal: true
 	};
 	
 	var Game = React.createClass({
-	  displayName: "Game",
+	    displayName: "Game",
 	
-	  getInitialState: function getInitialState() {
-	    return initialState;
-	  },
-	  markChoice: function markChoice(event) {
-	    console.log(event.target.id);
-	    if (event.target.id === "X") {
-	      this.setState({ showTable: true });
-	      document.getElementById("modal").style.display = "none";
-	    } else if (event.target.id === "O") {
-	      this.setState({
-	        humanMark: "O",
-	        compMark: "X",
-	        showTable: true
-	      });
-	      document.getElementById("modal").style.display = "none";
-	    }
-	  },
-	  //checkArray looks through each array combination for
-	  //the id which could be 0 - 8
-	  checkCombo: function checkCombo(arr, id, markType) {
-	    var id = parseInt(id);
-	    //if the id passed into checkArray exists in combination array
-	    if (arr.indexOf(id) !== -1) {
-	      for (var i = 0; i < arr.length; i++) {
-	        //update the element of the array to be the markType
-	        if (arr[i] == id) {
-	          arr[i] = markType;
+	    getInitialState: function getInitialState() {
+	        return initialState;
+	    },
+	    markChoice: function markChoice(event) {
+	        if (event.target.id === "X") {
+	            this.setState({
+	                showModal: false,
+	                showTable: true
+	            });
+	        } else if (event.target.id === "O") {
+	            this.setState({
+	                humanMark: "O",
+	                compMark: "X",
+	                showModal: false,
+	                showTable: true
+	            });
 	        }
-	      }
-	    }
-	  },
-	  winner: function winner(arr, markType) {
-	    var count = 0;
-	    for (var i = 0; i < arr.length; i++) {
-	      //if each element in the array is an X or O
-	      if (arr[i] === markType) {
-	        //add to count
-	        count++;
-	      }
-	    }
-	    //if count is the length of the array then we have a winner
-	    if (count === arr.length) {
-	      win = true;
-	      this.setState({ compsTurn: true });
-	      setTimeout(function () {
-	        mark = 0;
-	        count = 0;
-	        blocked = false;
-	        twoCompMarks = false;
-	        newNum = 0;
-	        num = 0;
-	        _winner = markType;
-	        array = [0, 1, 2, 3, 4, 5, 6, 7, 8];
-	        arr1 = [0, 1, 2];
-	        arr2 = [3, 4, 5];
-	        arr3 = [6, 7, 8];
-	        arr4 = [0, 3, 6];
-	        arr5 = [1, 4, 7];
-	        arr6 = [2, 5, 8];
-	        arr7 = [0, 4, 8];
-	        arr8 = [2, 4, 6];
-	        win = false;
-	        for (var i = 0; i < 9; i++) {
-	          document.getElementById(i.toString()).innerHTML = '';
+	    },
+	    //checkCombo looks through each array combination for
+	    //the id which could be 0 - 8
+	    checkCombo: function checkCombo(arr, id, markType) {
+	        var id = parseInt(id);
+	        //if the id passed into checkArray exists in combination array
+	        if (arr.indexOf(id) !== -1) {
+	            for (var i = 0; i < arr.length; i++) {
+	                //update the element of the array to be the markType
+	                if (arr[i] == id) {
+	                    arr[i] = markType;
+	                }
+	            }
 	        }
-	      }, 3000);
-	    }
-	    if (mark === array.length) {
-	      win = true;
-	      setTimeout(function () {
-	        _winner = 'tie';
-	        console.log(_winner);
-	        count = 0;
-	        blocked = false;
-	        twoCompMarks = false;
-	        newNum = 0;
-	        num = 0;
-	        array = [0, 1, 2, 3, 4, 5, 6, 7, 8];
-	        arr1 = [0, 1, 2];
-	        arr2 = [3, 4, 5];
-	        arr3 = [6, 7, 8];
-	        arr4 = [0, 3, 6];
-	        arr5 = [1, 4, 7];
-	        arr6 = [2, 5, 8];
-	        arr7 = [0, 4, 8];
-	        arr8 = [2, 4, 6];
-	        win = false;
-	        for (var i = 0; i < 9; i++) {
-	          document.getElementById(i.toString()).innerHTML = '';
+	    },
+	    winner: function winner(arr, markType) {
+	        var count = 0;
+	        for (var i = 0; i < arr.length; i++) {
+	            //if each element in the array is an X or O
+	            if (arr[i] === markType) {
+	                //add to count
+	                count++;
+	            }
 	        }
-	      }, 3000);
-	    }
-	  },
-	  /*use checkAllCombos to add mark types to combination arrays if necessary*/
-	  checkAllCombos: function checkAllCombos(id, markType) {
-	    this.checkCombo(arr1, id, markType);
-	    this.checkCombo(arr2, id, markType);
-	    this.checkCombo(arr3, id, markType);
-	    this.checkCombo(arr4, id, markType);
-	    this.checkCombo(arr5, id, markType);
-	    this.checkCombo(arr6, id, markType);
-	    this.checkCombo(arr7, id, markType);
-	    this.checkCombo(arr8, id, markType);
-	  },
-	  getRandomArbitrary: function getRandomArbitrary(min, max) {
-	    return Math.floor(Math.random() * (max - min) + min);
-	  },
+	        //if count is the length of the array then we have a winner
+	        if (count === arr.length) {
+	            _winner = markType;
+	            document.getElementById('wins').innerHTML = _winner + " wins";
+	            win = true;
+	            setTimeout(function () {
+	                mark = 0;
+	                count = 0;
+	                blocked = false;
+	                twoCompMarks = false;
+	                newNum = 0;
+	                num = 0;
+	                array = [0, 1, 2, 3, 4, 5, 6, 7, 8];
+	                arr1 = [0, 1, 2];
+	                arr2 = [3, 4, 5];
+	                arr3 = [6, 7, 8];
+	                arr4 = [0, 3, 6];
+	                arr5 = [1, 4, 7];
+	                arr6 = [2, 5, 8];
+	                arr7 = [0, 4, 8];
+	                arr8 = [2, 4, 6];
+	                win = false;
+	                document.getElementById('wins').innerHTML = '';
+	                for (var i = 0; i < 9; i++) {
+	                    document.getElementById(i.toString()).innerHTML = '';
+	                }
+	            }, 5000);
+	        }
+	        if (mark === array.length) {
+	            win = true;
+	            document.getElementById('wins').innerHTML = "It's a Tie";
+	            setTimeout(function () {
+	                _winner = 'tie';
+	                count = 0;
+	                blocked = false;
+	                twoCompMarks = false;
+	                newNum = 0;
+	                num = 0;
+	                array = [0, 1, 2, 3, 4, 5, 6, 7, 8];
+	                arr1 = [0, 1, 2];
+	                arr2 = [3, 4, 5];
+	                arr3 = [6, 7, 8];
+	                arr4 = [0, 3, 6];
+	                arr5 = [1, 4, 7];
+	                arr6 = [2, 5, 8];
+	                arr7 = [0, 4, 8];
+	                arr8 = [2, 4, 6];
+	                win = false;
+	                document.getElementById('wins').innerHTML = "";
+	                for (var i = 0; i < 9; i++) {
+	                    document.getElementById(i.toString()).innerHTML = '';
+	                }
+	            }, 5000);
+	        }
+	    },
+	    /*use checkAllCombos to add mark types to combination arrays if necessary*/
+	    checkAllCombos: function checkAllCombos(id, markType) {
+	        this.checkCombo(arr1, id, markType);
+	        this.checkCombo(arr2, id, markType);
+	        this.checkCombo(arr3, id, markType);
+	        this.checkCombo(arr4, id, markType);
+	        this.checkCombo(arr5, id, markType);
+	        this.checkCombo(arr6, id, markType);
+	        this.checkCombo(arr7, id, markType);
+	        this.checkCombo(arr8, id, markType);
+	    },
+	    getRandomArbitrary: function getRandomArbitrary(min, max) {
+	        return Math.floor(Math.random() * (max - min) + min);
+	    },
 	
-	  /*choose a corner or center spot first for most chances*/
-	  compFirstChoice: function compFirstChoice() {
-	    var altFirstChoice = [0, 2, 6, 8];
-	    if (array[4] !== "") {
-	      num = 4;
-	      document.getElementById(array[num].toString()).innerHTML = this.state.compMark;
-	      mark++;
-	      this.checkAllCombos(array[num], this.state.compMark);
-	      array[num] = '';
-	      num = 0;
-	    } else {
-	      num = altFirstChoice[Math.floor(Math.random() * altFirstChoice.length)];
-	      if (!array[num]) {
-	        this.compFirstChoice();
-	      } else {
-	        document.getElementById(array[num].toString()).innerHTML = this.state.compMark;
-	        mark++;
-	        this.checkAllCombos(array[num], this.state.compMark);
-	        array[num] = '';
-	        num = 0;
-	      }
-	    }
-	  },
-	  twoComps: function twoComps(arr, num) {
-	    var count = 0;
-	    if (arr.indexOf(this.state.humanMark) !== -1) {
-	      return;
-	    }
-	    for (var i = 0; i < arr.length; i++) {
-	      if (arr[i] === this.state.compMark) {
-	        console.log(arr[i], arr);
-	        count++;
-	      }
-	    }
-	    if (count === 2) {
-	      for (var i = 0; i < arr.length; i++) {
-	        if (arr[i] !== this.state.compMark) {
-	          console.log(arr[i]);
-	          console.log(arr);
-	          twoCompMarks = true;
-	          newNum = arr[i];
+	    /*choose a corner or center spot first for most chances*/
+	    compFirstChoice: function compFirstChoice() {
+	        var altFirstChoice = [0, 2, 6, 8];
+	        if (array[4] !== "") {
+	            num = 4;
+	            document.getElementById(array[num].toString()).innerHTML = this.state.compMark;
+	            mark++;
+	            this.checkAllCombos(array[num], this.state.compMark);
+	            array[num] = '';
+	            num = 0;
+	        } else {
+	            num = altFirstChoice[Math.floor(Math.random() * altFirstChoice.length)];
+	            if (!array[num]) {
+	                this.compFirstChoice();
+	            } else {
+	                document.getElementById(array[num].toString()).innerHTML = this.state.compMark;
+	                mark++;
+	                this.checkAllCombos(array[num], this.state.compMark);
+	                array[num] = '';
+	                num = 0;
+	            }
 	        }
-	      }
-	    }
-	  },
-	  /*block checks if any combo array has more than one humanMark*/
-	  block: function block(arr, num) {
-	    var count = 0;
-	    if (arr.indexOf(this.state.compMark) !== -1) {
-	      return;
-	    }
-	    for (var i = 0; i < arr.length; i++) {
-	      if (arr[i] === this.state.humanMark) {
-	        count++;
-	      }
-	    }
-	    if (count === 2) {
-	      for (var i = 0; i < arr.length; i++) {
-	        if (arr[i] !== this.state.humanMark) {
-	          blocked = true;
-	          newNum = arr[i];
+	    },
+	    twoComps: function twoComps(arr, num) {
+	        var count = 0;
+	        if (arr.indexOf(this.state.humanMark) !== -1) {
+	            return;
 	        }
-	      }
-	    }
-	    if (count < 2) {
-	      return;
-	    }
-	  },
+	        for (var i = 0; i < arr.length; i++) {
+	            if (arr[i] === this.state.compMark) {
+	                count++;
+	            }
+	        }
+	        if (count === 2) {
+	            for (var i = 0; i < arr.length; i++) {
+	                if (arr[i] !== this.state.compMark) {
+	                    twoCompMarks = true;
+	                    newNum = arr[i];
+	                }
+	            }
+	        }
+	    },
+	    /*block checks if any combo array has more than one humanMark*/
+	    block: function block(arr, num) {
+	        var count = 0;
+	        if (arr.indexOf(this.state.compMark) !== -1) {
+	            return;
+	        }
+	        for (var i = 0; i < arr.length; i++) {
+	            if (arr[i] === this.state.humanMark) {
+	                count++;
+	            }
+	        }
+	        if (count === 2) {
+	            for (var i = 0; i < arr.length; i++) {
+	                if (arr[i] !== this.state.humanMark) {
+	                    blocked = true;
+	                    newNum = arr[i];
+	                }
+	            }
+	        }
+	        if (count < 2) {
+	            return;
+	        }
+	    },
 	
-	  /*all subsequent choices start here*/
-	  compChoice: function compChoice() {
-	    var num = 0;
-	    if (_winner === this.state.humanMark) {
-	      console.log(_winner);
-	      _winner = "";
-	      return;
-	    }
-	    if (mark === array.length) {
-	      _winner = '';
-	      mark = '';
-	      return;
-	    }
-	    num = this.getRandomArbitrary(0, array.length);
-	    if (array.indexOf(num) !== num) {
-	      this.compChoice();
-	    } else {
-	      this.twoComps(arr1, num);
-	      this.twoComps(arr2, num);
-	      this.twoComps(arr3, num);
-	      this.twoComps(arr4, num);
-	      this.twoComps(arr5, num);
-	      this.twoComps(arr6, num);
-	      this.twoComps(arr7, num);
-	      this.twoComps(arr8, num);
-	      if (twoCompMarks) {
-	        num = newNum;
-	      }
-	      if (!twoCompMarks) {
-	        /*see if we need to block*/
-	        this.block(arr1, num);
-	        this.block(arr2, num);
-	        this.block(arr3, num);
-	        this.block(arr4, num);
-	        this.block(arr5, num);
-	        this.block(arr6, num);
-	        this.block(arr7, num);
-	        this.block(arr8, num);
-	        if (blocked) {
-	          num = newNum;
+	    /*all subsequent choices start here*/
+	    compChoice: function compChoice() {
+	        var num = 0;
+	        if (_winner === this.state.humanMark) {
+	            _winner = "";
+	            return;
 	        }
-	      }
-	      /*we use this for loop in case the number returned from block is not a good number*/
-	      if (array.indexOf(num) !== num) {
-	        console.log('hi im wrong');
+	        if (mark === array.length) {
+	            _winner = '';
+	            mark = '';
+	            return;
+	        }
+	        num = this.getRandomArbitrary(0, array.length);
+	        if (array.indexOf(num) !== num) {
+	            this.compChoice();
+	        } else {
+	            this.twoComps(arr1, num);
+	            this.twoComps(arr2, num);
+	            this.twoComps(arr3, num);
+	            this.twoComps(arr4, num);
+	            this.twoComps(arr5, num);
+	            this.twoComps(arr6, num);
+	            this.twoComps(arr7, num);
+	            this.twoComps(arr8, num);
+	            if (twoCompMarks) {
+	                num = newNum;
+	            }
+	            if (!twoCompMarks) {
+	                /*see if we need to block*/
+	                this.block(arr1, num);
+	                this.block(arr2, num);
+	                this.block(arr3, num);
+	                this.block(arr4, num);
+	                this.block(arr5, num);
+	                this.block(arr6, num);
+	                this.block(arr7, num);
+	                this.block(arr8, num);
+	                if (blocked) {
+	                    num = newNum;
+	                }
+	            }
+	            /*we use this for loop in case the number returned from block is not a good number*/
+	            if (array.indexOf(num) !== num) {
+	                for (var i = 0; i < array.length; i++) {
+	                    if (array[i] !== "") {
+	                        num = array[i];
+	                    }
+	                }
+	            }
+	            document.getElementById(array.indexOf(num)).innerHTML = this.state.compMark;
+	            mark++;
+	            this.checkAllCombos(array.indexOf(num), this.state.compMark);
+	            array[num] = '';
+	            this.winner(arr1, this.state.compMark);
+	            this.winner(arr2, this.state.compMark);
+	            this.winner(arr3, this.state.compMark);
+	            this.winner(arr4, this.state.compMark);
+	            this.winner(arr5, this.state.compMark);
+	            this.winner(arr6, this.state.compMark);
+	            this.winner(arr7, this.state.compMark);
+	            this.winner(arr8, this.state.compMark);
+	        }
+	    },
+	    /*on human click*/
+	    onTdClick: function onTdClick(event) {
+	        if (win) {
+	            return;
+	        }
+	        if (array[parseInt(event.target.id)] === '') {
+	            return;
+	        }
 	        for (var i = 0; i < array.length; i++) {
-	          if (array[i] !== "") {
-	            num = array[i];
-	          }
+	            if (parseInt(event.target.id) === array[i]) {
+	                array[i] = '';
+	            }
 	        }
-	      }
-	      document.getElementById(array.indexOf(num)).innerHTML = this.state.compMark;
-	      mark++;
-	      this.checkAllCombos(array.indexOf(num), this.state.compMark);
-	      array[num] = '';
-	      console.log(array);
-	      this.winner(arr1, this.state.compMark);
-	      this.winner(arr2, this.state.compMark);
-	      this.winner(arr3, this.state.compMark);
-	      this.winner(arr4, this.state.compMark);
-	      this.winner(arr5, this.state.compMark);
-	      this.winner(arr6, this.state.compMark);
-	      this.winner(arr7, this.state.compMark);
-	      this.winner(arr8, this.state.compMark);
+	        document.getElementById(event.target.id).innerHTML = this.state.humanMark;
+	        mark++;
+	        this.checkAllCombos(parseInt(event.target.id), this.state.humanMark);
+	        this.winner(arr1, this.state.humanMark);
+	        this.winner(arr2, this.state.humanMark);
+	        this.winner(arr3, this.state.humanMark);
+	        this.winner(arr4, this.state.humanMark);
+	        this.winner(arr5, this.state.humanMark);
+	        this.winner(arr6, this.state.humanMark);
+	        this.winner(arr7, this.state.humanMark);
+	        this.winner(arr8, this.state.humanMark);
+	        if (mark === 1) {
+	            this.compFirstChoice();
+	        } else {
+	            this.compChoice();
+	        }
+	    },
+	    render: function render() {
+	        return React.createElement(
+	            "div",
+	            null,
+	            this.state.showModal ? React.createElement(Modal, { onClick: this.markChoice }) : null,
+	            this.state.showTable ? React.createElement(Table, { onClick: this.onTdClick }) : null
+	        );
 	    }
-	  },
-	  /*on human click*/
-	  onTdClick: function onTdClick(event) {
-	    if (win) {
-	      return;
-	    }
-	    if (array[parseInt(event.target.id)] === '') {
-	      return;
-	    }
-	    for (var i = 0; i < array.length; i++) {
-	      if (parseInt(event.target.id) === array[i]) {
-	        array[i] = '';
-	      }
-	    }
-	    document.getElementById(event.target.id).innerHTML = this.state.humanMark;
-	    mark++;
-	    this.checkAllCombos(parseInt(event.target.id), this.state.humanMark);
-	    this.winner(arr1, this.state.humanMark);
-	    this.winner(arr2, this.state.humanMark);
-	    this.winner(arr3, this.state.humanMark);
-	    this.winner(arr4, this.state.humanMark);
-	    this.winner(arr5, this.state.humanMark);
-	    this.winner(arr6, this.state.humanMark);
-	    this.winner(arr7, this.state.humanMark);
-	    this.winner(arr8, this.state.humanMark);
-	    if (mark === 1) {
-	      this.compFirstChoice();
-	    } else {
-	      this.compChoice();
-	    }
-	  },
-	  render: function render() {
-	    return React.createElement(
-	      "div",
-	      null,
-	      React.createElement(Modal, { onClick: this.markChoice }),
-	      this.state.showTable ? React.createElement(Table, { onClick: this.onTdClick }) : null
-	    );
-	  }
 	});
 	module.exports = Game;
 
@@ -21759,10 +21757,10 @@
 	        { id: "flex-width" },
 	        React.createElement(
 	          "table",
-	          null,
+	          { id: "table" },
 	          React.createElement(
 	            "tbody",
-	            { id: "table" },
+	            null,
 	            React.createElement(
 	              "tr",
 	              null,
@@ -21785,7 +21783,8 @@
 	              React.createElement("td", { id: "8", className: "bottom right", onClick: this.props.onClick })
 	            )
 	          )
-	        )
+	        ),
+	        React.createElement("h1", { id: "wins" })
 	      )
 	    );
 	  }
