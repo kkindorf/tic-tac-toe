@@ -15,6 +15,7 @@ var winner = "";
 var mark = 0;
 var win = false;
 var blocked = false;
+var fork;
 var newNum = 0;
 var num = 0;
 var table;
@@ -205,6 +206,34 @@ var Game = React.createClass({
       }
 
   },
+  checkForks: function(){
+
+      if(array[6] === '' && array[2] === '' && array[1] !== ''){
+          newNum = array[1];
+          fork = true;
+      }
+      if(array[0] === '' && array[8] === '' && array[3] !== ''){
+        newNum = array[3];
+        fork = true;
+      }
+      if(array[5] === '' && array[7] === '' && array[8] !== ''){
+        newNum = array[8];
+        fork = true;
+      }
+      if(array[7] === '' && array[3]=== '' && array[6] !== ''){
+        newNum = array[6];
+        fork = true;
+      }
+      if(array[1] === '' && array[3] === '' && array[0] !== ''){
+        newNum = array[0];
+        fork = true;
+      }
+      if(array[1] === '' && array[5] === '' && array[2] !== ''){
+        newNum = array[2];
+        fork = true;
+      }
+},
+
 
   /*all subsequent choices start here*/
   compChoice: function() {
@@ -245,6 +274,12 @@ var Game = React.createClass({
               this.block(arr8, num);
               if (blocked) {
                   num = newNum;
+              }
+              if(!blocked){
+                this.checkForks();
+              }
+              if(fork){
+                num = newNum;
               }
           }
           /*we use this for loop in case the number returned from block is not a good number*/
