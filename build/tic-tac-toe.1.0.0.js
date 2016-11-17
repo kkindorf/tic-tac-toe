@@ -21660,6 +21660,38 @@
 	            newNum = array[2];
 	            fork = true;
 	        }
+	        if (array[0] === '' && array[2] !== '') {
+	            newNum = array[2];
+	            fork = true;
+	        }
+	        if (array[2] === '' && array[0] !== '') {
+	            newNum = array[0];
+	            fork = true;
+	        }
+	        if (array[0] === '' && array[6] !== '') {
+	            newNum = array[6];
+	            fork = true;
+	        }
+	        if (array[6] === '' && array[0] !== '') {
+	            newNum = array[0];
+	            fork = true;
+	        }
+	        if (array[6] === '' && array[8] !== '') {
+	            newNum = array[8];
+	            fork = true;
+	        }
+	        if (array[8] === '' && array[6] !== '') {
+	            newNum = array[6];
+	            fork = true;
+	        }
+	        if (array[8] === '' && array[2] !== '') {
+	            newNum = array[2];
+	            fork = true;
+	        }
+	        if (array[2] === '' && array[8] !== '') {
+	            newNum = array[8];
+	            fork = true;
+	        }
 	    },
 	
 	    /*all subsequent choices start here*/
